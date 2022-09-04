@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mariadb://xd5.serverdomain.org:3306/xd572_db5</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="jackfit-test (sqllite)" uuid="68d0ddbe-3c9e-48c5-bfd9-61d04718e214">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/prisma/data.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

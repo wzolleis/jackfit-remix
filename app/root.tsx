@@ -18,7 +18,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Remix Notes",
+  title: "jackfit",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -32,6 +32,7 @@ export default function App() {
   return (
     <html lang="en" className="h-full">
       <head>
+        <title>Jackfit - have fun</title>
         <Meta />
         <Links />
       </head>
