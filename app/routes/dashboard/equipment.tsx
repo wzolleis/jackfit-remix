@@ -1,6 +1,7 @@
 import {json} from "@remix-run/node";
-import {Link, useLoaderData} from "@remix-run/react";
+import {Link, Outlet, useLoaderData} from "@remix-run/react";
 import {getEquipments} from "~/models/equipment.server"
+import EquipmentCard from "~/equipment/EquipmentCard";
 
 type LoaderData = {
     equipments: Awaited<ReturnType<typeof getEquipments>>
@@ -19,19 +20,17 @@ const Equipment = () => {
 
     return (
         <main>
-            <h1>Equipments</h1>
-            <ul>
+            <ul className="flex flex-row gap-2">
                 {equipments.map((equipment) => (
                     <li key={equipment.id}>
-                        <Link
-                            to={equipment.id}
-                            className="text-blue-600 underline"
-                        >
-                            {equipment.name}
-                        </Link>
+                        <EquipmentCard equipment={equipment}/>
                     </li>
                 ))}
             </ul>
+
+            <div className="flex-1 p-6">
+                <Outlet />
+            </div>
         </main>
     )
 }

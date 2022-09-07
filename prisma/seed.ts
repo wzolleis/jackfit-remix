@@ -1,4 +1,4 @@
-import {PrismaClient} from "@prisma/client";
+import {PrismaClient, Equipment} from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -26,15 +26,22 @@ async function seed() {
 
     console.log('created user with id: ', user.id)
 
-    await prisma.equipment.create({
-        data: {
+    const equipments = [
+        {
             name: "Chest Press",
             muscle_type: "Chest",
             userId: user.id
+        },
+        {
+            name: "Butterfly",
+            muscle_type: "Chest",
+            userId: user.id
         }
-    })
+    ]
 
-    console.log(`Database has been seeded. 🌱`);
+    await Promise.all(equipments.map((equipment) => prisma.equipment.create( {data: equipment})))
+
+   console.log(`Database has been seeded. 🌱`);
 }
 
 seed()
