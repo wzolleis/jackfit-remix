@@ -11,4 +11,8 @@ export const appLinks = {
             label: "Training"
         }
     },
+    admin: {
+        path: "/admin",
+        label: "Verwaltung"
+    }
 }

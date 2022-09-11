@@ -1,6 +1,7 @@
 import {Link} from "@remix-run/react";
 
 import {useOptionalUser} from "~/utils";
+import AppNavBar from "~/common/app/appNavBar";
 
 export default function Index() {
     const user = useOptionalUser();
@@ -17,7 +18,8 @@ export default function Index() {
                             />
                             <div className="absolute inset-0 bg-[color:rgba(254,204,27,0.5)] mix-blend-multiply"/>
                         </div>
-                        <div className="relative px-4 pt-16 pb-8 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pb-20 lg:pt-32">
+                        <div
+                            className="relative px-4 pt-16 pb-8 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pb-20 lg:pt-32">
                             <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-yellow-500 drop-shadow-md">
                   jackfit
@@ -60,11 +62,7 @@ export default function Index() {
                         Referenzen
                     </Link>
                     <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-end">
-                        <a
-                           href="https://freepik.com/">
-                           {/*href="https://de.freepik.com/vektoren-kostenlos/rotes-halbtonmuster-auf-dunklem-hintergrund_17565335.htm#query=sport%20banner&position=5&from_view=search">*/}
-                            Bilder von Freepik
-                        </a>
+                        <a href="https://freepik.com/">Bilder von Freepik</a>
                     </div>
                 </div>
             </div>
