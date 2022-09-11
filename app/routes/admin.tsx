@@ -1,4 +1,4 @@
-const EquipmentAdmin = () => {
+const Admin = () => {
     return (
         <>
             <h2>Admin !!!</h2>
@@ -6,4 +6,4 @@ const EquipmentAdmin = () => {
     )
 }
 
-export default EquipmentAdmin
+export default Admin

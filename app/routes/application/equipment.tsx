@@ -1,7 +1,7 @@
 import {json} from "@remix-run/node";
 import {Outlet, useLoaderData} from "@remix-run/react";
 import {getEquipments} from "~/models/equipment.server"
-import EquipmentCard from "~/equipment/EquipmentCard";
+import EquipmentCard from "~/features/equipment/EquipmentCard";
 
 type LoaderData = {
     equipments: Awaited<ReturnType<typeof getEquipments>>
