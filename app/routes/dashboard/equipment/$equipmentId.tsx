@@ -1,7 +1,8 @@
 import {json, LoaderFunction} from "@remix-run/node";
 import {getEquipment} from "~/models/equipment.server";
 import invariant from "tiny-invariant";
-import {useLoaderData} from "@remix-run/react";
+import {useCatch, useLoaderData} from "@remix-run/react";
+import CatchView from "~/errorhandling/CatchView";
 
 type LoaderData = {
     equipment: Awaited<ReturnType<typeof getEquipment>>
@@ -14,10 +15,16 @@ export const loader: LoaderFunction = async ({params: {equipmentId}}) => {
     })
 };
 
+export const CatchBoundary = () => {
+    const {status, statusText} = useCatch();
+
+    return (
+        <CatchView statusText={statusText} status={status}/>
+    );
+}
+
 const EquipmentDetails = () => {
     const {equipment} = useLoaderData<LoaderData>()
-
-    // todo - equipment === null --> not found
 
     return (
         <div>

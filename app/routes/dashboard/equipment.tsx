@@ -1,5 +1,5 @@
 import {json} from "@remix-run/node";
-import {Link, Outlet, useLoaderData} from "@remix-run/react";
+import {Outlet, useLoaderData} from "@remix-run/react";
 import {getEquipments} from "~/models/equipment.server"
 import EquipmentCard from "~/equipment/EquipmentCard";
 
@@ -16,22 +16,23 @@ export const loader = async () => {
 
 const Equipment = () => {
     const {equipments} = useLoaderData<LoaderData>()
-    console.log(equipments)
 
     return (
         <main>
-            <ul className="flex flex-row gap-2">
-                {equipments.map((equipment) => (
-                    <li key={equipment.id}>
-                        <EquipmentCard equipment={equipment}/>
-                    </li>
-                ))}
-            </ul>
-
+            <div className="overflow-x-auto">
+                <ul className="flex flex-row gap-2">
+                    {equipments.map((equipment) => (
+                        <li key={equipment.id}>
+                            <EquipmentCard equipment={equipment}/>
+                        </li>
+                    ))}
+                </ul>
+            </div>
             <div className="flex-1 p-6">
-                <Outlet />
+                <Outlet/>
             </div>
         </main>
+
     )
 }
 
