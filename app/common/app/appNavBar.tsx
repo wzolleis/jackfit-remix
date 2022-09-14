@@ -1,7 +1,8 @@
 import {appMenu} from "~/common/app/appMenu";
 import {Form, Link} from "@remix-run/react";
-import {appLinks} from "~/common/app/appLinks";
-import {MdLogout} from 'react-icons/md'
+import {AppLink, appLinks} from "~/common/app/appLinks";
+import {useUser} from "~/utils";
+import {PropsWithChildren} from "react";
 
 const MainMenu = () => {
     return (
@@ -21,16 +22,28 @@ const MainMenu = () => {
 
 const AppLogo = () => {
     return (
-        <a href="/" className="flex items-center">
-            <img src="/img/logo.jpg" className="mr-3 h-6 sm:h-9" alt="Jackfit Logo"/>
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                        Jackfit
-                    </span>
-        </a>
+        <div>
+            <a href="/" className="flex">
+                <img src="/img/logo.jpg" className="mr-3 h-6 sm:h-9" alt="Jackfit Logo"/>
+                <span
+                    className="self-center text-xl font-semibold whitespace-nowrap text-black dark:text-yellow-300">Jackfit</span>
+            </a>
+        </div>
     )
 }
 
 const UserMenu = () => {
+    const user = useUser();
+
+    const MenuLink = ({link: {path, label}}: PropsWithChildren<{ link: AppLink }>) =>
+        <Link
+            className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+            to={path}
+        >
+            {label}
+        </Link>
+
+
     return (
         <>
             <button type="button"
@@ -52,26 +65,22 @@ const UserMenu = () => {
                 }}
                 data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom">
                 <div className="py-3 px-4">
-                    <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-                    <span
-                        className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+                    <span className="block text-sm text-gray-900 dark:text-white">{user.email}</span>
                 </div>
                 <ul className="py-1" aria-labelledby="user-menu-button">
                     <li>
-                        <Link
-                            className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                            to={appLinks.application.path}>{appLinks.application.label}</Link>
+                        <MenuLink link={appLinks.application}/>
                     </li>
                     <li>
-                        <a href="#"
-                           className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                        <MenuLink link={{path: '#', label: 'Settings'}}/>
                     </li>
                     <li>
                         <Form action="/logout" method="post">
                             <button type="submit"
-                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <MdLogout size='1.5rem'/>
-                                <span className="sr-only">Logout</span>
+                                    className="dark:text-gray-200 background-transparent font-bold px-3 py-1 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            >
+                                <i className="fa-solid fa-right-from-bracket  mr-2 "/>
+                                Logout
                             </button>
                         </Form>
                     </li>
@@ -83,12 +92,10 @@ const UserMenu = () => {
 
 const AppNavBar = () => {
     return (
-        <nav className="border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 bg-slate-800 p-4 text-white">
-            <div className="container flex flex-wrap justify-between items-center mx-auto">
+        <nav className="bg-gray-900 bg-slate-800 p-4">
+            <div className="container flex flex-wrap justify-around items-center">
                 <AppLogo/>
                 <div className="flex items-center md:order-2">
-
-                    {/* <!-- Dropdown menu --> */}
                     <UserMenu/>
                     <button data-collapse-toggle="mobile-menu-2" type="button"
                             className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"

@@ -1,15 +1,30 @@
-import type { Equipment } from "@prisma/client";
+import type {Equipment} from "@prisma/client";
 import {prisma} from "~/db.server";
+import {DateTime} from "luxon";
 
 export type {Equipment} from "@prisma/client";
-
-export const getEquipments = async () => {
-    return prisma.equipment.findMany();
+export type SerializableEquipment = Omit<Equipment, "createdAt" | "updatedAt"> & {
+    createdAt: string
+    updatedAt: string
 }
 
-export const getEquipment = async (equipmentId: string) => {
+const makeSerializable = (equipment: Equipment) => {
+    return {
+        ...equipment,
+        createdAt: DateTime.fromJSDate(equipment.createdAt).toFormat('dd.MM.yyyy HH:mm'),
+        updatedAt: DateTime.fromJSDate(equipment.updatedAt).toFormat('dd.MM.yyyy HH:mm')
+    }
+}
+
+export const getEquipments = async (): Promise<SerializableEquipment[]> => {
+    const equipments = await prisma.equipment.findMany()
+    return equipments.map(makeSerializable)
+}
+
+
+export const getEquipment = async (equipmentId: string): Promise<SerializableEquipment> => {
     const equipment = await prisma.equipment.findUnique({
-        where: {id: equipmentId}
+        where: {id: equipmentId},
     })
 
     if (!equipment) {
@@ -19,7 +34,7 @@ export const getEquipment = async (equipmentId: string) => {
         });
     }
 
-    return equipment
+    return makeSerializable(equipment)
 }
 
 export const createEquipment = async (
@@ -27,7 +42,7 @@ export const createEquipment = async (
 
     const errors = {
         name: !equipment.name ? `Gerätename muss gesetzt sein` : undefined,
-        type: !equipment.muscle_type ? `Gerätetyp muss gesetzt sein`: undefined,
+        type: !equipment.muscle_type ? `Gerätetyp muss gesetzt sein` : undefined,
         user: !equipment.userId ? "User muss gesetzt sein" : undefined
     }
 

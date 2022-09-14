@@ -1,8 +1,8 @@
 import {Link} from "@remix-run/react";
-import {Equipment} from "@prisma/client";
+import {SerializableEquipment} from "~/models/equipment.client";
 
 interface EquipmentCardProps {
-    equipment: Equipment
+    equipment: SerializableEquipment
 }
 
 const EquipmentCard = ({equipment}: EquipmentCardProps) => {

@@ -1,3 +1,8 @@
+export type AppLink = {
+    path: string
+    label: string
+}
+
 export const appLinks = {
     application: {
         path: "/application",
