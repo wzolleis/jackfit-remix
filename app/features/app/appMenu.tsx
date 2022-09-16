@@ -1,4 +1,4 @@
-import {appLinks} from "~/common/app/appLinks";
+import {appLinks} from "~/features/app/appLinks";
 
 export const appMenu = [
     {

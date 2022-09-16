@@ -43,7 +43,6 @@ export default function App() {
         <Outlet/>
         <ScrollRestoration/>
         <Scripts/>
-        <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
         <LiveReload/>
         </body>
         </html>

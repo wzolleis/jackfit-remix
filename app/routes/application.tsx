@@ -1,5 +1,5 @@
 import {Outlet} from "@remix-run/react";
-import AppNavBar from "~/common/app/appNavBar";
+import AppNavBar from "~/features/app/AppNavBar";
 
 const Application = () => {
     return (
