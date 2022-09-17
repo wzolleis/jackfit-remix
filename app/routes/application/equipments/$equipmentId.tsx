@@ -2,7 +2,7 @@ import {json, LoaderFunction} from "@remix-run/node";
 import {getEquipment} from "~/models/equipment.server";
 import invariant from "tiny-invariant";
 import {useCatch, useLoaderData} from "@remix-run/react";
-import CatchView from "~/common/errorhandling/CatchView";
+import CatchView from "~/features/errorhandling/CatchView";
 
 type LoaderData = {
     equipment: Awaited<ReturnType<typeof getEquipment>>

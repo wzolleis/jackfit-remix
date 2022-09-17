@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Link} from "@remix-run/react";
-import {closeIcon, hamburgerIcon} from "~/common/menu/menuIcons";
-import {MenuEntry} from "~/features/app/appMenu";
+import {closeIcon, hamburgerIcon} from "~/features/nav/menuIcons";
+import {MenuEntry} from "~/features/nav/appMenu";
 
 interface AppNavBarProps {
     appMenu: MenuEntry[]

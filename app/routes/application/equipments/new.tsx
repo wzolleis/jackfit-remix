@@ -1,5 +1,5 @@
 import {Form, useActionData, useTransition} from "@remix-run/react";
-import {FormInput, FormLabel, FormSubmitButton} from "~/common/form/formComponents";
+import {FormInput, FormLabel, FormSubmitButton} from "~/features/form/formComponents";
 // import {ActionFunction, json, redirect} from "@remix-run/node";
 // import {createEquipment} from "~/models/equipment.server";
 // import {useUser} from "~/utils";
