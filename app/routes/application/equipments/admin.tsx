@@ -27,13 +27,20 @@ const EquipmentAdmin = () => {
     return (
         <div>
             <h1>ADMIN !!</h1>
-            {
-                equipments.map(equipment => {
-                    return (
-                        <Link key={equipment.id} to={equipment.id}>{equipment.name}</Link>
-                    )
-                })
-            }
+            <div className="overflow-x-auto">
+                <ul className="flex flex-col gap-2">
+                    {
+                        equipments.map(equipment => {
+                            return (
+                                <li key={equipment.id}>
+                                    <Link  to={equipment.id}>{equipment.name}</Link>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
+            </div>
+
         </div>
     )
 }

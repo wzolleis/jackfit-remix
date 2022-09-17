@@ -18,28 +18,23 @@ const Equipments = () => {
     const {equipments} = useLoaderData<LoaderData>()
 
     return (
-        <div>
-            <header>
-                <h2>Add!!</h2>
-            </header>
-            <main>
-                <div className="overflow-x-auto">
-                    <ul className="flex flex-row gap-2">
-                        {equipments.map((equipment) => (
-                            <li key={equipment.id}>
-                                <EquipmentCard equipment={equipment}/>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div>
-                    Neu
-                </div>
-                <div className="flex-1 p-6">
-                    <Outlet/>
-                </div>
-            </main>
-        </div>
+        <main>
+            <div className="overflow-auto">
+                <ul className="flex sm:flex-row flex-col gap-2">
+                    {equipments.map((equipment) => (
+                        <li key={equipment.id}>
+                            <EquipmentCard equipment={equipment}/>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div>
+                Neu
+            </div>
+            <div className="flex-1 p-6">
+                <Outlet/>
+            </div>
+        </main>
     )
 }
 

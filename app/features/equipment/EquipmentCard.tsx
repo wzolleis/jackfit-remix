@@ -14,7 +14,7 @@ const EquipmentCard = ({equipment}: EquipmentCardProps) => {
                 {equipment.name}
             </h5>
             <p>
-                <Link to={equipment.id} className="font-normal underline hover:text-yellow-300">Details</Link>
+                <Link to={equipment.id} className="font-normal underline hover:text-yellow-300">Anpassen</Link>
             </p>
         </div>
     )
