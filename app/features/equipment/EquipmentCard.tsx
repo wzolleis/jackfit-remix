@@ -9,12 +9,12 @@ interface EquipmentCardProps {
 const EquipmentCard = ({equipment}: EquipmentCardProps) => {
     return (
         <div
-            className="block p-6 max-w-sm text-white rounded-lg border shadow-md bg-gray-900 border-gray-700 hover:bg-gray-700">
+            className="block p-6 max-w-sm text-white rounded-lg border shadow-md bg-gray-900 border-gray-700 hover:bg-yellow-600">
             <h5 className="mb-2 text-2xl font-bold tracking-tight">
                 {equipment.name}
             </h5>
             <p>
-                <Link to={equipment.id} className="font-normal underline hover:text-yellow-300">Anpassen</Link>
+                <Link to={equipment.id} className="font-normal underline">{equipment.name}</Link>
             </p>
         </div>
     )

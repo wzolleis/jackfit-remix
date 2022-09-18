@@ -1,5 +1,5 @@
 import {json} from "@remix-run/node";
-import {Outlet, useLoaderData} from "@remix-run/react";
+import {Link, Outlet, useLoaderData} from "@remix-run/react";
 import {getEquipments} from "~/models/equipment.server"
 import EquipmentCard from "~/features/equipment/EquipmentCard";
 
@@ -28,8 +28,12 @@ const Equipments = () => {
                     ))}
                 </ul>
             </div>
-            <div>
-                Neu
+            <div className="flex py-2">
+                <Link to="new"
+                      className="items-center justify-center rounded-md bg-gray-900 px-4 py-3 font-medium text-white hover:bg-yellow-600">
+                    <i className="fa-solid fa-square-plus mr-2"></i>
+                    Neu
+                </Link>
             </div>
             <div className="flex-1 p-6">
                 <Outlet/>
