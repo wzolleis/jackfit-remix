@@ -35,25 +35,41 @@ export const getEquipment = async (equipmentId: string): Promise<SerializableEqu
             statusText: `Es gibt kein Gerät mit der ID ${equipmentId}`
         });
     }
-
     return makeSerializable(equipment)
 }
 
 export type ActionData = {
     name: string | null
-    type: string | null
-    user: string | null
+    muscle: string | null
 }
 
-export const createEquipment = async (equipment: Pick<Equipment, "name" | "muscle_type" | "userId">) => {
+export const createEquipment = async (equipment: Pick<Equipment, "name" | "muscle" >) => {
     const errors: ActionData = {
         name: !equipment.name ? `Gerätename muss gesetzt sein` : null,
-        type: !equipment.muscle_type ? `Gerätetyp muss gesetzt sein` : null,
-        user: !equipment.userId ? "User muss gesetzt sein" : null
+        muscle: !equipment.muscle ? `Gerätetyp muss gesetzt sein` : null,
     }
 
     if (Object.values(errors).some(value => value !== null)) {
         return json<ActionData>(errors)
     }
     await prisma.equipment.create({data: equipment})
+}
+
+export async function updateEquipment(
+    id: string,
+    equipment: Pick<Equipment, "name" | "muscle">
+) {
+    const errors: ActionData = {
+        name: !equipment.name ? `Gerätename muss gesetzt sein` : null,
+        muscle: !equipment.muscle ? `Muskel muss gesetzt sein` : null,
+    }
+
+    if (Object.values(errors).some(value => value !== null)) {
+        return json<ActionData>(errors)
+    }
+    return prisma.equipment.update({data: equipment, where: {id}});
+}
+
+export async function deleteEquipment(id: string) {
+    return prisma.equipment.delete({where: {id}});
 }

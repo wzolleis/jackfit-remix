@@ -9,14 +9,12 @@ import invariant from "tiny-invariant";
 export const action: ActionFunction = async ({request,}) => {
     const formData = await request.formData();
     const name = formData.get("name") || "";
-    const muscle_type = formData.get("type") || "";
-    const userId = formData.get("userId") || "";
+    const muscle = formData.get("muscle") || "";
 
     invariant(typeof name === "string", "Name must be a string");
-    invariant(typeof muscle_type === "string", "Type must be a string");
-    invariant(typeof userId === "string", "Userid must be a string");
+    invariant(typeof muscle === "string", "Type must be a string");
 
-    const errors = await createEquipment({name, muscle_type, userId});
+    const errors = await createEquipment({name, muscle});
     const hasErrors = !!errors && Object.values(errors).some((errorMessage) => errorMessage);
     if (hasErrors) {
         return json(errors);
@@ -36,7 +34,6 @@ export default function NewEquipment() {
                 <fieldset
                     disabled={transition.state === "submitting"}
                 >
-                    <input type="text" name="userId" value={user.id} disabled={true} hidden={true}/>
                     <div>
                         <FormLabel id="name" labelTxt="Name"/>
                         <FormInput type="text"
@@ -56,17 +53,17 @@ export default function NewEquipment() {
                     <div>
                         <FormLabel id="type" labelTxt="Type"/>
                         <FormInput type="text"
-                                   id="type"
+                                   id="muscle"
                                    required={true}
                                    placeholder="Chest, Shoulder, Arms,..."
                                    style={{
-                                       borderColor: errors?.type
+                                       borderColor: errors?.muscle
                                            ? "red"
                                            : ""
                                    }}
                         />
-                        {errors?.type ? (
-                            <em className="text-red-600">{errors.type}</em>
+                        {errors?.muscle ? (
+                            <em className="text-red-600">{errors.muscle}</em>
                         ) : null}
                     </div>
                     <div className="text-right m-2">

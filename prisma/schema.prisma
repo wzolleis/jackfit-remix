@@ -20,8 +20,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   password Password?
-  notes    Note[]
-  equipments Equipment[]
+//  equipments Equipment[]
 }
 
 model Password {
@@ -31,26 +30,12 @@ model Password {
   userId String @unique
 }
 
-model Note {
-  id    String @id @default(cuid())
-  title String
-  body  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
-}
-
 model Equipment {
     id    String @id @default(cuid())
     name  String
-    muscle_type String
-
+    muscle String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    userId String
+//    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//    userId String
 }

@@ -1,17 +1,16 @@
-import {PrismaClient, Equipment} from "@prisma/client";
+import {PrismaClient} from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function seed() {
-    const email = "rachel@remix.run";
+    const email = "jack@jack.de";
 
     // cleanup the existing database
-    await prisma.user.delete({where: {email}}).catch(() => {
-        // no worries if it doesn't exist yet
-    });
+    await prisma.user.delete({where: {email}}).catch(() => {});
+    await prisma.equipment.deleteMany({where: {name: {startsWith: 'Test'}}}).catch(() => {});
 
-    const hashedPassword = await bcrypt.hash("racheliscool", 10);
+    const hashedPassword = await bcrypt.hash("jackjack", 10);
 
     const user = await prisma.user.create({
         data: {
@@ -28,20 +27,18 @@ async function seed() {
 
     const equipments = [
         {
-            name: "Chest Press",
-            muscle_type: "Chest",
-            userId: user.id
+            name: "Test_Chest Press",
+            muscle: "Chest",
         },
         {
-            name: "Butterfly",
-            muscle_type: "Chest",
-            userId: user.id
+            name: "Test_Butterfly",
+            muscle: "Chest",
         }
     ]
 
-    await Promise.all(equipments.map((equipment) => prisma.equipment.create( {data: equipment})))
+    await Promise.all(equipments.map((equipment) => prisma.equipment.create({data: equipment})))
 
-   console.log(`Database has been seeded. 🌱`);
+    console.log(`Database has been seeded. 🌱`);
 }
 
 seed()

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/prisma/migrations/20220713162558_init/migration.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/prisma/migrations/20220906235201_s_equipment_table/migration.sql" dialect="SQLite" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Link} from "@remix-run/react";
+import {Form, Link} from "@remix-run/react";
 import {closeIcon, hamburgerIcon} from "~/features/nav/menuIcons";
 import {MenuEntry} from "~/features/nav/appMenu";
 
@@ -40,7 +40,16 @@ const AppNavBar = ({appMenu}: AppNavBarProps) => {
                         {menu.appLink.label}
                     </Link>
                 )}
+                <Form action="/logout" method="post">
+                    <button
+                        type="submit"
+                        className="block px-2 py-1 text-gray-100 font-semibold rounded hover:bg-gray-800 hover:text-yellow-300"
+                    >
+                        Logout
+                    </button>
+                </Form>
             </nav>
+
         </header>
     );
 }
