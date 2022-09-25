@@ -7,8 +7,17 @@ async function seed() {
     const email = "jack@jack.de";
 
     // cleanup the existing database
-    await prisma.user.delete({where: {email}}).catch(() => {});
-    await prisma.equipment.deleteMany({where: {name: {startsWith: 'Test'}}}).catch(() => {});
+    await prisma.user.delete({where: {email}}).catch(() => {
+    });
+    await prisma.equipment.deleteMany({
+        where: {
+            OR: [
+                {name: {startsWith: 'Test'}},
+                {test: true},
+            ],
+        }
+    }).catch(() => {
+    });
 
     const hashedPassword = await bcrypt.hash("jackjack", 10);
 
@@ -29,10 +38,12 @@ async function seed() {
         {
             name: "Test_Chest Press",
             muscle: "Chest",
+            test: true
         },
         {
             name: "Test_Butterfly",
             muscle: "Chest",
+            test: true
         }
     ]
 

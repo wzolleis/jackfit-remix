@@ -17,17 +17,22 @@ export const FormLabel = ({id, labelTxt, ...rest}: FormLabelProps) => {
 }
 
 type FormInputProps = {
-    id: string,
+    id?: string,
+    name: string
     placeholder: string,
     type: string
     [key: string]: unknown
 }
 
-export const FormInput = ({id, placeholder, type = "text", ...rest}: FormInputProps) => {
-    const inputClassName = `border text-sm rounded-lg block w-full p-2.5 bg-gray-600 text-white border-gray-600 placeholder-gray-400 focus:text-white focus:bg-yellow-600 focus:ring-blue-500 focus:border-blue-500`;
-
+export const FormInput = ({id, name, placeholder, type = "text", ...rest}: FormInputProps) => {
     return (
-        <input type={type} id={id} name={id} className={inputClassName} placeholder={placeholder} {...rest}/>
+        <input type={type}
+               id={id}
+               name={name}
+               className="border text-sm rounded-lg block w-full p-2.5 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 focus:border-2"
+               placeholder={placeholder}
+               {...rest}
+        />
     )
 }
 
@@ -39,7 +44,7 @@ export const FormSubmitButton = ({buttonTxt, ...rest}: FormSubmitButtonProps) =>
     return (
         <button
             type="submit"
-            className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400 disabled:bg-blue-300"
+            className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 disabled:bg-blue-300 focus:border-2"
             {...rest}
         >
             {buttonTxt}

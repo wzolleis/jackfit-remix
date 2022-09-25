@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import {faker} from "@faker-js/faker";
 
 describe("smoke tests", () => {
   afterEach(() => {
@@ -27,7 +27,7 @@ describe("smoke tests", () => {
 
   it("should allow you to view the equipment", () => {
     cy.login();
-    cy.visitAndCheck("/dashboard");
-    cy.findByRole("link", { name: /Geräte/i }).click();
+    cy.visitAndCheck("/application");
+    cy.findByText(/Geräte/i).click();
   });
 });

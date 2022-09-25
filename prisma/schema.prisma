@@ -36,6 +36,7 @@ model Equipment {
     muscle String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    test Boolean @default(false)
 //    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 //    userId String
 }

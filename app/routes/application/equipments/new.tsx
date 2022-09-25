@@ -2,9 +2,9 @@ import {Form, useActionData, useCatch, useTransition} from "@remix-run/react";
 import {FormInput, FormLabel, FormSubmitButton} from "~/features/form/formComponents";
 import {ActionFunction, json, redirect} from "@remix-run/node";
 import {ActionData, createEquipment} from "~/models/equipment.server";
-import {useUser} from "~/utils";
 import CatchView from "~/features/errorhandling/CatchView";
 import invariant from "tiny-invariant";
+import * as React from "react";
 
 export const action: ActionFunction = async ({request,}) => {
     const formData = await request.formData();
@@ -24,7 +24,7 @@ export const action: ActionFunction = async ({request,}) => {
 };
 
 export default function NewEquipment() {
-    const user = useUser();
+    // const user = useUser();
     const errors = useActionData<ActionData>();
     const transition = useTransition();
 
@@ -38,7 +38,9 @@ export default function NewEquipment() {
                         <FormLabel id="name" labelTxt="Name"/>
                         <FormInput type="text"
                                    id="name"
+                                   name="name"
                                    required={true}
+                                   autoFocus={true}
                                    placeholder="Chest Press..."
                                    style={{
                                        borderColor: errors?.name
@@ -54,6 +56,7 @@ export default function NewEquipment() {
                         <FormLabel id="type" labelTxt="Type"/>
                         <FormInput type="text"
                                    id="muscle"
+                                   name="muscle"
                                    required={true}
                                    placeholder="Chest, Shoulder, Arms,..."
                                    style={{
