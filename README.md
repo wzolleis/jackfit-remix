@@ -1,6 +1,6 @@
 # Remix Indie Stack
 
-![The Remix Indie Stack](https://repository-images.githubusercontent.com/465928257/a241fa49-bd4d-485a-a2a5-5cb8e4ee0abf)
+![The Remix Indie Stack]
 
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
@@ -61,11 +61,8 @@ The database seed script creates a new user with some data you can use to get st
 
 ### Relevant code:
 
-This is a pretty simple note-taking app, but it's a good example of how you can build a full stack app with Prisma and Remix. The main functionality is creating users, logging in and out, and creating and deleting notes.
-
 - creating users, and logging in and out [./app/models/user.server.ts](./app/models/user.server.ts)
 - user sessions, and verifying them [./app/session.server.ts](./app/session.server.ts)
-- creating, and deleting notes [./app/models/note.server.ts](./app/models/note.server.ts)
 
 ## Deployment
 
@@ -78,7 +75,7 @@ Prior to your first deployment, you'll need to do a few things:
 - Sign up and log in to Fly
 
   ```sh
-  fly auth signup
+  flyctl auth signup
   ```
 
   > **Note:** If you have more than one Fly account, ensure that you are signed into the same account in the Fly CLI as you are in the browser. In your terminal, run `fly auth whoami` and ensure the email matches the Fly account signed into the browser.
@@ -86,8 +83,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Create two apps on Fly, one for staging and one for production:
 
   ```sh
-  fly apps create jackfit-remix-3344
-  fly apps create jackfit-remix-3344-staging
+  flyctl apps create jackfit-remix-3344
+  # flyctl apps create jackfit-remix-3344-staging
   ```
 
   > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
@@ -109,8 +106,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
   ```sh
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app jackfit-remix-3344
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app jackfit-remix-3344-staging
+  flyctl secrets set SESSION_SECRET=$(openssl rand -hex 32) --app jackfit-remix-3344
+  # flyctl secrets set SESSION_SECRET=$(openssl rand -hex 32) --app jackfit-remix-3344-staging
   ```
 
   If you don't have openssl installed, you can also use [1password](https://1password.com/password-generator/) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
@@ -118,8 +115,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Create a persistent volume for the sqlite database for both your staging and production environments. Run the following:
 
   ```sh
-  fly volumes create data --size 1 --app jackfit-remix-3344
-  fly volumes create data --size 1 --app jackfit-remix-3344-staging
+  flyctl volumes create data --size 1 --app jackfit-remix-3344
+  #flyctl volumes create data --size 1 --app jackfit-remix-3344-staging
   ```
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
@@ -130,46 +127,71 @@ The sqlite database lives at `/data/sqlite.db` in your deployed application. You
 
 ### Getting Help with Deployment
 
-If you run into any issues deploying to Fly, make sure you've followed all of the steps above and if you have, then post as many details about your deployment (including your app name) to [the Fly support community](https://community.fly.io). They're normally pretty responsive over there and hopefully can help resolve any of your deployment issues and questions.
+If you run into any issues deploying to Fly, make sure you've followed all of the steps above and if you have, then post
+as many details about your deployment (including your app name) to [the Fly support community](https://community.fly.io)
+. They're normally pretty responsive over there and hopefully can help resolve any of your deployment issues and
+questions.
 
 ## GitHub Actions
 
-We use GitHub Actions for continuous integration and deployment. Anything that gets into the `main` branch will be deployed to production after running tests/build/etc. Anything in the `dev` branch will be deployed to staging.
+We use GitHub Actions for continuous integration and deployment. Anything that gets into the `main` branch will be
+deployed to production after running tests/build/etc. Anything in the `dev` branch will be deployed to staging.
 
 ## Testing
 
-### Cypress
+[//]: # (### Cypress)
 
-We use Cypress for our End-to-End tests in this project. You'll find those in the `cypress` directory. As you make changes, add to an existing file or create a new file in the `cypress/e2e` directory to test your changes.
+[//]: # (We use Cypress for our End-to-End tests in this project. You'll find those in the `cypress` directory. As you make changes, add to an existing file or create a new file in the `cypress/e2e` directory to test your changes.)
 
-We use [`@testing-library/cypress`](https://testing-library.com/cypress) for selecting elements on the page semantically.
+[//]: # ()
 
-To run these tests in development, run `npm run test:e2e:dev` which will start the dev server for the app as well as the Cypress client. Make sure the database is running in docker as described above.
+[//]: # (We use [`@testing-library/cypress`]&#40;https://testing-library.com/cypress&#41; for selecting elements on the page semantically.)
 
-We have a utility for testing authenticated features without having to go through the login flow:
+[//]: # ()
 
-```ts
-cy.login();
-// you are now logged in as a new user
-```
+[//]: # (To run these tests in development, run `npm run test:e2e:dev` which will start the dev server for the app as well as the Cypress client. Make sure the database is running in docker as described above.)
 
-We also have a utility to auto-delete the user at the end of your test. Just make sure to add this in each test file:
+[//]: # ()
 
-```ts
-afterEach(() => {
-  cy.cleanupUser();
-});
-```
+[//]: # (We have a utility for testing authenticated features without having to go through the login flow:)
 
-That way, we can keep your local db clean and keep your tests isolated from one another.
+[//]: # (```ts)
+
+[//]: # (cy.login&#40;&#41;;)
+
+[//]: # (// you are now logged in as a new user)
+
+[//]: # (```)
+
+[//]: # ()
+
+[//]: # (We also have a utility to auto-delete the user at the end of your test. Just make sure to add this in each test file:)
+
+[//]: # ()
+
+[//]: # (```ts)
+
+[//]: # (afterEach&#40;&#40;&#41; => {)
+
+[//]: # (  cy.cleanupUser&#40;&#41;;)
+
+[//]: # (}&#41;;)
+
+[//]: # (```)
+
+[//]: # ()
+
+[//]: # (That way, we can keep your local db clean and keep your tests isolated from one another.)
 
 ### Vitest
 
-For lower level tests of utilities and individual components, we use `vitest`. We have DOM-specific assertion helpers via [`@testing-library/jest-dom`](https://testing-library.com/jest-dom).
+For lower level tests of utilities and individual components, we use `vitest`. We have DOM-specific assertion helpers
+via [`@testing-library/jest-dom`](https://testing-library.com/jest-dom).
 
 ### Type Checking
 
-This project uses TypeScript. It's recommended to get TypeScript set up for your editor to get a really great in-editor experience with type checking and auto-complete. To run type checking across the whole project, run `npm run typecheck`.
+This project uses TypeScript. It's recommended to get TypeScript set up for your editor to get a really great in-editor
+experience with type checking and auto-complete. To run type checking across the whole project, run `npm run typecheck`.
 
 ### Linting
 
