@@ -1,12 +1,12 @@
-//datasource db {
-//  provider = "sqlite"
-//  url      = env("DATABASE_URL")
-//}
-
-datasource mysqldb {
-  provider = "mysql"
-  url      = env("MYSQL_DATABASE_URL")
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db?connection_limit=1"
 }
+
+//datasource mysqldb {
+//  provider = "mysql"
+//  url      = env("MYSQL_DATABASE_URL")
+//}
 
 generator client {
   provider = "prisma-client-js"
