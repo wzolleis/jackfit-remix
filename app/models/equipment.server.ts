@@ -1,9 +1,9 @@
-import type {Equipment} from "@prisma/client";
-import {prisma} from "~/db.server";
-import {DateTime} from "luxon";
-import {json} from "@remix-run/node";
+import type { Equipment } from "@prisma/client";
+import { prisma } from "~/db.server";
+import { DateTime } from "luxon";
+import { json } from "@remix-run/node";
 
-export type {Equipment} from "@prisma/client";
+export type { Equipment } from "@prisma/client";
 
 export type SerializableEquipment = Omit<Equipment, "createdAt" | "updatedAt"> & {
     createdAt: string
@@ -43,31 +43,32 @@ export type ActionData = {
     muscle: string | null
 }
 
-export const createEquipment = async (equipment: Pick<Equipment, "name" | "muscle" >) => {
+export const createEquipment = async (equipment: Pick<Equipment, "name" | "muscle" | "test">) => {
     const errors: ActionData = {
         name: !equipment.name ? `Gerätename muss gesetzt sein` : null,
-        muscle: !equipment.muscle ? `Gerätetyp muss gesetzt sein` : null,
-    }
+        muscle: !equipment.muscle ? `Gerätetyp muss gesetzt sein` : null
+    };
 
     if (Object.values(errors).some(value => value !== null)) {
-        return json<ActionData>(errors)
+        return json<ActionData>(errors);
     }
-    await prisma.equipment.create({data: equipment})
-}
+    await prisma.equipment.create({ data: equipment });
+};
 
 export async function updateEquipment(
-    id: string,
-    equipment: Pick<Equipment, "name" | "muscle">
+  id: string,
+  equipment: Pick<Equipment, "name" | "muscle" | "test">
 ) {
     const errors: ActionData = {
         name: !equipment.name ? `Gerätename muss gesetzt sein` : null,
-        muscle: !equipment.muscle ? `Muskel muss gesetzt sein` : null,
-    }
+        muscle: !equipment.muscle ? `Muskel muss gesetzt sein` : null
+    };
 
     if (Object.values(errors).some(value => value !== null)) {
-        return json<ActionData>(errors)
+        return json<ActionData>(errors);
     }
-    return prisma.equipment.update({data: equipment, where: {id}});
+
+    await prisma.equipment.update({ data: equipment, where: { id } });
 }
 
 export async function deleteEquipment(id: string) {
