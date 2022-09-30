@@ -32,16 +32,16 @@ export default function NewEquipment() {
   const transition = useTransition();
 
   return (
-    <div className="grid gap-6 mb-6 bg-gray-300 md:grid-cols-2 px-4 py-4">
-      <Form method="post">
+    <div className="grid gap-6 mb-6 bg-gray-300 md:grid-cols-2 px-4">
+      <Form method="post" className="py-2">
         <fieldset
           disabled={transition.state === "submitting"}
         >
           <EquipmentView errors={errors} />
-          <div className="text-right m-2">
+          <div className="text-right">
             <button
               type="submit"
-              className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300 focus:border-2 px-2"
+              className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300 focus:border-2 my-2 px-2"
             >
               {transition.state === "submitting" ? "Speichere..." : "Gerät anlegen"}
             </button>

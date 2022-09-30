@@ -1,7 +1,6 @@
 import { json } from "@remix-run/node";
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import { getEquipments } from "~/models/equipment.server";
-import EquipmentCard from "~/features/equipment/EquipmentCard";
 
 type LoaderData = {
   equipments: Awaited<ReturnType<typeof getEquipments>>
@@ -15,31 +14,42 @@ export const loader = async () => {
 
 
 const Equipments = () => {
-    const {equipments} = useLoaderData<LoaderData>()
+  const { equipments } = useLoaderData<LoaderData>();
+  const params = useParams();
+  const equipmentId = params.equipmentId;
 
-    return (
-        <main>
-            <div className="overflow-auto">
-                <ul className="flex sm:flex-row flex-col gap-2">
-                    {equipments.map((equipment) => (
-                        <li key={equipment.id}>
-                            <EquipmentCard equipment={equipment}/>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-          <div className="flex py-2">
-            <Link to="new"
-                  className="items-center justify-center rounded-md bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600">
-              <i className="fa-solid fa-square-plus mr-2"></i>
-              Neu
-            </Link>
-          </div>
-          <div className="flex-1">
-            <Outlet />
-          </div>
-        </main>
-    )
-}
+  console.log("params", params);
 
-export default Equipments
+  return (
+    <main className="flex:col md:flex">
+      <div className="w-auto h-full md:w-1/4 mb-2 md:mr-2 p-2 bg-gray-300">
+        <ul className="mb-4">
+          {equipments.map((equipment) => {
+              let fontStyle = equipment.id === equipmentId ? "font-bold" : "font-medium";
+              return (
+                <li key={equipment.id} className="hover:bg-gray-400">
+                  <Link to={equipment.id}
+                        className={`items-center justify-center ${fontStyle}`}>
+                    {equipment.name}
+                  </Link>
+                </li>
+              );
+            }
+          )}
+        </ul>
+
+        <div className="text-right">
+          <Link to="new"
+                className="rounded inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-blue-600 uppercase transition bg-transparent border-2 border-blue-500 ripple hover:bg-blue-600 hover:text-white focus:outline-none">
+            Neu
+          </Link>
+        </div>
+      </div>
+      <div className="md:w-full">
+        <Outlet />
+      </div>
+    </main>
+  );
+};
+
+export default Equipments;
