@@ -1,16 +1,16 @@
-import {useState} from "react";
-import {Form, Link} from "@remix-run/react";
-import {closeIcon, hamburgerIcon} from "~/features/nav/menuIcons";
-import {MenuEntry} from "~/features/nav/appMenu";
+import { useState } from "react";
+import { Form, Link } from "@remix-run/react";
+import { closeIcon, hamburgerIcon } from "~/features/nav/menuIcons";
+import type { MenuEntry } from "~/features/nav/appMenu";
 
 interface AppNavBarProps {
-    appMenu: MenuEntry[]
+    appMenu: MenuEntry[];
 }
 
-const AppNavBar = ({appMenu}: AppNavBarProps) => {
+const AppNavBar = ({ appMenu }: AppNavBarProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const menuItemClassName = isOpen ? 'block' : 'hidden'
-    const hamburgerOrCloseIcon = isOpen ? hamburgerIcon : closeIcon
+    const menuItemClassName = isOpen ? "block" : "hidden";
+    const hamburgerOrCloseIcon = isOpen ? hamburgerIcon : closeIcon;
 
     return (
         <header className="bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">

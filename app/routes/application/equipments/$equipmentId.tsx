@@ -1,10 +1,12 @@
-import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
-import { ActionData, getEquipment, updateEquipment } from "~/models/equipment.server";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import type { EquipmentActionData } from "~/models/equipment.server";
+import { getEquipment, updateEquipment } from "~/models/equipment.server";
 import invariant from "tiny-invariant";
 import { Form, useActionData, useCatch, useLoaderData, useTransition } from "@remix-run/react";
 import CatchView from "~/features/errorhandling/CatchView";
-import { FormInput, FormLabel, FormSubmitButton } from "~/features/form/formComponents";
 import * as React from "react";
+import EquipmentView from "~/features/equipment/EquipmentView";
 
 type LoaderData = {
   equipment: Awaited<ReturnType<typeof getEquipment>>
@@ -24,7 +26,6 @@ export const action: ActionFunction = async ({ params: { equipmentId }, request 
   const errors = await updateEquipment(equipmentId, { name, muscle, test: test === "true" });
   const hasErrors = !!errors && Object.values(errors).some((errorMessage) => errorMessage);
   if (hasErrors) {
-    console.log(">>>>>>>>>>>", errors);
     return json(errors);
   }
 
@@ -41,56 +42,22 @@ export const loader: LoaderFunction = async ({ params: { equipmentId } }) => {
 
 const EquipmentDetails = () => {
   const { equipment } = useLoaderData<LoaderData>();
-  const errors = useActionData<ActionData>();
+  const errors = useActionData<EquipmentActionData>();
   const transition = useTransition();
-
   return (
-    <div className="grid gap-6 mb-6 md:grid-cols-2">
-      <Form method="post">
+    <div className="grid gap-6 mb-6 bg-gray-300 md:grid-cols-2 px-4">
+      <Form method="post" className="py-2">
         <fieldset
           disabled={transition.state === "submitting"}
         >
-          <div>
-            <input
-              className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-              type="checkbox"
-              value="true"
-              id="test"
-              name="test"
-              defaultChecked={equipment.test}
-            />
-            <label>Testgerät</label>
-          </div>
-          <div>
-            <FormLabel id="name" labelTxt="Name" />
-            <FormInput type="text"
-                       id="name"
-                       name="name"
-                       required={true}
-                       autoFocus={true}
-                       placeholder="Chest Press..."
-                       defaultValue={equipment.name}
-            />
-            {errors?.name ? (
-              <em className="text-red-600">{errors.name}</em>
-            ) : null}
-          </div>
-          <div>
-            <FormLabel id="type" labelTxt="Type" />
-            <FormInput type="text"
-                       id="muscle"
-                       name="muscle"
-                       required={true}
-                       placeholder="Chest, Shoulder, Arms,..."
-                       defaultValue={equipment.muscle}
-            />
-            {errors?.muscle ? (
-              <em className="text-red-600">{errors.muscle}</em>
-            ) : null}
-          </div>
-          <div className="text-right m-2">
-            <FormSubmitButton
-              buttonTxt={transition.state === "submitting" ? "Speichere..." : "Speichern"} />
+          <EquipmentView errors={errors} defaultValues={equipment} />
+          <div className="text-right">
+            <button
+              type="submit"
+              className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300 focus:border-2 my-2 px-2"
+            >
+              {transition.state === "submitting" ? "Speichere..." : "Speichern"}
+            </button>
           </div>
         </fieldset>
       </Form>

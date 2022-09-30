@@ -1,4 +1,5 @@
-import {AppLink, appLinks} from "~/features/nav/appLinks";
+import type { AppLink } from "~/features/nav/appLinks";
+import { appLinks } from "~/features/nav/appLinks";
 
 export type MenuEntry = {
     id: string

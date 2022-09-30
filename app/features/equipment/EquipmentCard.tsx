@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { SerializableEquipment } from "~/models/equipment.client";
+import type { SerializableEquipment } from "~/models/equipment.client";
 import React from "react";
 
 interface EquipmentCardProps {

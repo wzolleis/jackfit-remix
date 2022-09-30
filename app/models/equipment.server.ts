@@ -5,6 +5,11 @@ import { json } from "@remix-run/node";
 
 export type { Equipment } from "@prisma/client";
 
+export type EquipmentActionData = {
+    name: string | null
+    muscle: string | null
+}
+
 export type SerializableEquipment = Omit<Equipment, "createdAt" | "updatedAt"> & {
     createdAt: string
     updatedAt: string
@@ -13,7 +18,7 @@ export type SerializableEquipment = Omit<Equipment, "createdAt" | "updatedAt"> &
 const makeSerializable = (equipment: Equipment) => {
     return {
         ...equipment,
-        createdAt: DateTime.fromJSDate(equipment.createdAt).toFormat('dd.MM.yyyy HH:mm'),
+        createdAt: DateTime.fromJSDate(equipment.createdAt).toFormat("dd.MM.yyyy HH:mm"),
         updatedAt: DateTime.fromJSDate(equipment.updatedAt).toFormat('dd.MM.yyyy HH:mm')
     }
 }
@@ -38,19 +43,14 @@ export const getEquipment = async (equipmentId: string): Promise<SerializableEqu
     return makeSerializable(equipment)
 }
 
-export type ActionData = {
-    name: string | null
-    muscle: string | null
-}
-
 export const createEquipment = async (equipment: Pick<Equipment, "name" | "muscle" | "test">) => {
-    const errors: ActionData = {
+    const errors: EquipmentActionData = {
         name: !equipment.name ? `Gerätename muss gesetzt sein` : null,
         muscle: !equipment.muscle ? `Gerätetyp muss gesetzt sein` : null
     };
 
     if (Object.values(errors).some(value => value !== null)) {
-        return json<ActionData>(errors);
+        return json<EquipmentActionData>(errors);
     }
     await prisma.equipment.create({ data: equipment });
 };
@@ -59,13 +59,13 @@ export async function updateEquipment(
   id: string,
   equipment: Pick<Equipment, "name" | "muscle" | "test">
 ) {
-    const errors: ActionData = {
+    const errors: EquipmentActionData = {
         name: !equipment.name ? `Gerätename muss gesetzt sein` : null,
         muscle: !equipment.muscle ? `Muskel muss gesetzt sein` : null
     };
 
     if (Object.values(errors).some(value => value !== null)) {
-        return json<ActionData>(errors);
+        return json<EquipmentActionData>(errors);
     }
 
     await prisma.equipment.update({ data: equipment, where: { id } });
