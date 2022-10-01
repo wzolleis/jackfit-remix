@@ -15,15 +15,17 @@ export const loader = async () => {
 
 type EquipmentListProps = { equipments: SerializableEquipment[], activeEquipment?: string }
 const EquipmentList = ({ equipments, activeEquipment }: EquipmentListProps) => {
+
   return (
     <div className="mb-2 p-2 bg-gray-300 overflow-auto">
       <ul className="mb-2">
         {equipments.map((equipment) => {
-            const fontStyle = equipment.id === activeEquipment ? "font-bold" : "font-medium";
+            const isActive = equipment.id === activeEquipment;
+            const bgStyle = isActive ? "bg-gray-400 text-white" : "";
             return (
-              <li key={equipment.id} className="hover:bg-gray-400 hover:text-white">
+              <li key={equipment.id} className={"hover:bg-gray-400 hover:text-white " + bgStyle}>
                 <Link to={equipment.id}
-                      className={`items-center justify-center ${fontStyle}`}>
+                      className={isActive ? "font-bold" : "font-medium"}>
                   {equipment.name}
                 </Link>
               </li>
@@ -32,7 +34,7 @@ const EquipmentList = ({ equipments, activeEquipment }: EquipmentListProps) => {
         )}
       </ul>
       <Link to="new"
-            className="p-2 hover:bg-gray-100 rounded mb-2 outline-gray-200 border-gray-300">
+            className="py-2 hover:bg-gray-100 rounded border-gray-300">
         <i className="fa-solid fa-square-plus" />
         <span className="m-2">{messages.equipments.new}</span>
       </Link>

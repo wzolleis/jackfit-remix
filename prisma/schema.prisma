@@ -20,7 +20,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   password Password?
-//  equipments Equipment[]
+  trainings Training[]
 }
 
 model Password {
@@ -37,6 +37,44 @@ model Equipment {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     test Boolean @default(false)
-//    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-//    userId String
+    exercises Exercise[]
+}
+
+model ExerciseSet {
+   id    String @id @default(cuid())
+   excercises Exercise[]
+   start Decimal?
+   increment Decimal?
+   end Decimal?
+}
+
+model Exercise {
+    id    String @id @default(cuid())
+    notes String?
+    trainingType String // Gewicht, Zeit, ...
+    repeatCount Int?
+    weight Decimal?
+    duration Int?
+    durationUnit String?
+
+    equipment   Equipment @relation(fields: [equipmentId], references: [id])
+    equipmentId String
+
+    excerciseSet ExerciseSet? @relation(fields: [excerciseSetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    excerciseSetId String?
+
+    training Training @relation(fields: [trainingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    trainingId String
+
+}
+
+model Training {
+   id    String @id @default(cuid())
+   exercises Exercise[]
+
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+
+   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+   userId String
 }
