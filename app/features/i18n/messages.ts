@@ -1,4 +1,7 @@
 const messages = {
+  application: {
+    title: "Jackfit"
+  },
   equipments: {
     new: "Neu"
   },
