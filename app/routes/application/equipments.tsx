@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useParams } from "@remix-run/react";
-import { getEquipments } from "~/models/equipment.server";
+import { getEquipments, SerializableEquipment } from "~/models/equipment.server";
 
 type LoaderData = {
   equipments: Awaited<ReturnType<typeof getEquipments>>
@@ -12,42 +12,48 @@ export const loader = async () => {
   });
 };
 
+type EquipmentListProps = { equipments: SerializableEquipment[], activeEquipment?: string }
+const EquipmentList = ({ equipments, activeEquipment }: EquipmentListProps) => {
+  return (
+    <ul className="md:w-1/2 px-2">
+      {equipments.map((equipment) => {
+          const fontStyle = equipment.id === activeEquipment ? "font-bold" : "font-medium";
+          return (
+            <li key={equipment.id} className="hover:bg-gray-400 hover:text-white">
+              <Link to={equipment.id}
+                    className={`items-center justify-center ${fontStyle}`}>
+                {equipment.name}
+              </Link>
+            </li>
+          );
+        }
+      )}
+      <div>
+        <Link to="new"
+              className="my-2 py-2 hover:bg-gray-500 mr-2">
+          <i className="fa-solid fa-square-plus" />
+        </Link>
+        <Link to="remove"
+              className="my-2 py-2 hover:bg-gray-500">
+          <i className="fa-solid fa-square-minus" />
+        </Link>
+      </div>
+    </ul>
+  );
+};
+
 
 const Equipments = () => {
   const { equipments } = useLoaderData<LoaderData>();
   const params = useParams();
   const equipmentId = params.equipmentId;
 
-  console.log("params", params);
-
   return (
-    <main className="flex:col md:flex">
-      <div className="w-auto h-full md:w-1/4 mb-2 md:mr-2 p-2 bg-gray-300">
-        <ul className="mb-4">
-          {equipments.map((equipment) => {
-              let fontStyle = equipment.id === equipmentId ? "font-bold" : "font-medium";
-              return (
-                <li key={equipment.id} className="hover:bg-gray-400">
-                  <Link to={equipment.id}
-                        className={`items-center justify-center ${fontStyle}`}>
-                    {equipment.name}
-                  </Link>
-                </li>
-              );
-            }
-          )}
-        </ul>
-
-        <div className="text-right">
-          <Link to="new"
-                className="rounded inline-block px-6 py-2 text-xs font-medium leading-6 text-center text-blue-600 uppercase transition bg-transparent border-2 border-blue-500 ripple hover:bg-blue-600 hover:text-white focus:outline-none">
-            Neu
-          </Link>
-        </div>
+    <main className="flex:col w-full h-full">
+      <div className="mb-2 p-2 bg-gray-300">
+        <EquipmentList equipments={equipments} activeEquipment={equipmentId} />
       </div>
-      <div className="md:w-full">
-        <Outlet />
-      </div>
+      <Outlet />
     </main>
   );
 };
