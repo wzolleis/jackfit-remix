@@ -1,7 +1,7 @@
 import type { Equipment } from "@prisma/client";
 import { prisma } from "~/db.server";
-import { DateTime } from "luxon";
 import { json } from "@remix-run/node";
+import dateUtils from "~/dateUtils";
 
 export type { Equipment } from "@prisma/client";
 
@@ -18,8 +18,8 @@ export type SerializableEquipment = Omit<Equipment, "createdAt" | "updatedAt"> &
 const makeSerializable = (equipment: Equipment) => {
     return {
         ...equipment,
-        createdAt: DateTime.fromJSDate(equipment.createdAt).toFormat("dd.MM.yyyy HH:mm"),
-        updatedAt: DateTime.fromJSDate(equipment.updatedAt).toFormat('dd.MM.yyyy HH:mm')
+        createdAt: dateUtils.format(equipment.createdAt),
+        updatedAt: dateUtils.format(equipment.updatedAt)
     }
 }
 
@@ -71,6 +71,6 @@ export async function updateEquipment(
     await prisma.equipment.update({ data: equipment, where: { id } });
 }
 
-export async function deleteEquipment(id: string) {
-    return prisma.equipment.delete({where: {id}});
-}
+// export async function deleteEquipment(id: string) {
+//     return prisma.equipment.delete({where: {id}});
+// }

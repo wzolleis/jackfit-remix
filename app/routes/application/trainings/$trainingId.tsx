@@ -1,49 +1,51 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import type { EquipmentActionData } from "~/models/equipment.server";
-import { getEquipment, updateEquipment } from "~/models/equipment.server";
 import invariant from "tiny-invariant";
 import { Form, useActionData, useCatch, useLoaderData, useTransition } from "@remix-run/react";
 import CatchView from "~/features/errorhandling/CatchView";
 import * as React from "react";
-import EquipmentView from "~/features/equipment/EquipmentView";
+import { getTraining, TrainingActionData, updateTraining } from "~/models/training.server";
+import TrainingView from "~/features/training/TrainingView";
 import ErrorView from "~/features/errorhandling/ErrorView";
+import { useUser } from "~/utils";
+import { requireUserId } from "~/session.server";
+import dateUtils from "~/dateUtils";
 
 type LoaderData = {
-  equipment: Awaited<ReturnType<typeof getEquipment>>
+  training: Awaited<ReturnType<typeof getTraining>>
 }
 
-export const action: ActionFunction = async ({ params: { equipmentId }, request }) => {
+export const action: ActionFunction = async ({ params: { trainingId }, request }) => {
   const formData = await request.formData();
-  const name = formData.get("name") || "";
-  const muscle = formData.get("muscle") || "";
-  const test = formData.get("test") || "false";
+  const executedAt = formData.get("executedAt") || dateUtils.format(new Date());
+  const userId = await requireUserId(request);
 
-  invariant(typeof name === "string", "Name must be a string");
-  invariant(typeof muscle === "string", "Type must be a string");
-  invariant(!!equipmentId, "ID muss gesetzt sein");
-  invariant(typeof test === "string", "test must be boolean");
+  invariant(typeof executedAt === "string", "ExecutedAt must be a string");
+  invariant(typeof userId === "string", "UserId must be a string");
+  invariant(!!trainingId, "ID muss gesetzt sein");
+  invariant(!!userId, "UserId muss gesetzt sein");
 
-  const errors = await updateEquipment(equipmentId, { name, muscle, test: test === "true" });
+  const errors = await updateTraining(trainingId, { executedAt: dateUtils.parse(executedAt), userId: userId });
   const hasErrors = !!errors && Object.values(errors).some((errorMessage) => errorMessage);
   if (hasErrors) {
     return json(errors);
   }
 
-  return redirect("application/equipments");
+  return redirect("application/trainings");
 };
 
 
-export const loader: LoaderFunction = async ({ params: { equipmentId } }) => {
-  invariant(equipmentId, "Expected params.equipmentId");
+export const loader: LoaderFunction = async ({ params: { trainingId } }) => {
+  invariant(trainingId, "Expected params.trainingId");
   return json<LoaderData>({
-    equipment: await getEquipment(equipmentId)
+    training: await getTraining(trainingId)
   });
 };
 
-const EquipmentDetails = () => {
-  const { equipment } = useLoaderData<LoaderData>();
-  const errors = useActionData<EquipmentActionData>();
+const TrainingDetails = () => {
+  const { training } = useLoaderData<LoaderData>();
+  const errors = useActionData<TrainingActionData>();
+  const user = useUser();
   const transition = useTransition();
   return (
     <div className="grid gap-6 mb-6 bg-gray-300 md:grid-cols-2 px-4">
@@ -51,7 +53,7 @@ const EquipmentDetails = () => {
         <fieldset
           disabled={transition.state === "submitting"}
         >
-          <EquipmentView errors={errors} defaultValues={equipment} />
+          <TrainingView errors={errors} defaultValues={training} user={user} />
           <div className="text-right">
             <button
               type="submit"
@@ -75,8 +77,8 @@ export const CatchBoundary = () => {
   const { statusText, status } = caught;
   return (
     <CatchView statusText={statusText} status={status} caught={caught}
-               description={"Gerät kann nicht geladen werden"} />
+               description={"Training kann nicht geladen werden"} />
   );
 };
 
-export default EquipmentDetails;
+export default TrainingDetails;

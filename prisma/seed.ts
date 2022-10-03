@@ -60,7 +60,8 @@ async function seed() {
   console.log("created equipments");
 
   const trainingData = {
-    userId: user.id
+    userId: user.id,
+    executedAt: new Date()
   };
   const training = await prisma.training.create({ data: trainingData });
   console.log("created training");

@@ -5,6 +5,9 @@ const messages = {
   equipments: {
     new: "Neu"
   },
+  trainings: {
+    new: "Neu"
+  },
   equipment: {
     new: {
       submit: "Anlegen",
@@ -20,6 +23,22 @@ const messages = {
       testDevice: "Testgerät",
       namePlaceholder: "Gerätename, z.B. Chest Press, ...",
       typePlaceholder: "Muskelgruppe, z.B. Chest, Shoulder,..."
+    }
+  },
+  training: {
+    new: {
+      submit: "Anlegen",
+      submitting: "Speichere..."
+    },
+    edit: {
+      submit: "Speichern",
+      submitting: "Speichere..."
+    },
+    form: {
+      userName: "Name",
+      createdAt: "Erstellt",
+      executedAt: "Durchgeführt",
+      executedAtPlaceholder: "Training am xx.yy.zz."
     }
   }
 };
