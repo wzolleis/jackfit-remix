@@ -7,7 +7,6 @@ import * as React from "react";
 import { getTraining, TrainingActionData, updateTraining } from "~/models/training.server";
 import TrainingView from "~/features/training/TrainingView";
 import ErrorView from "~/features/errorhandling/ErrorView";
-import { useUser } from "~/utils";
 import { requireUserId } from "~/session.server";
 import dateUtils from "~/dateUtils";
 
@@ -25,7 +24,10 @@ export const action: ActionFunction = async ({ params: { trainingId }, request }
   invariant(!!trainingId, "ID muss gesetzt sein");
   invariant(!!userId, "UserId muss gesetzt sein");
 
-  const errors = await updateTraining(trainingId, { executedAt: dateUtils.parse(executedAt), userId: userId });
+  const errors = await updateTraining(trainingId, {
+    executedAt: dateUtils.parse(executedAt) || dateUtils.now(),
+    userId: userId
+  });
   const hasErrors = !!errors && Object.values(errors).some((errorMessage) => errorMessage);
   if (hasErrors) {
     return json(errors);
@@ -45,7 +47,6 @@ export const loader: LoaderFunction = async ({ params: { trainingId } }) => {
 const TrainingDetails = () => {
   const { training } = useLoaderData<LoaderData>();
   const errors = useActionData<TrainingActionData>();
-  const user = useUser();
   const transition = useTransition();
   return (
     <div className="grid gap-6 mb-6 bg-gray-300 md:grid-cols-2 px-4">
@@ -53,7 +54,7 @@ const TrainingDetails = () => {
         <fieldset
           disabled={transition.state === "submitting"}
         >
-          <TrainingView errors={errors} defaultValues={training} user={user} />
+          <TrainingView errors={errors} defaultValues={training} />
           <div className="text-right">
             <button
               type="submit"

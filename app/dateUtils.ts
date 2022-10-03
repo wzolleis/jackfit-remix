@@ -9,7 +9,10 @@ const parse = (text: string | null | undefined): Date | undefined => {
   return DateTime.fromFormat(text, "dd.MM.yyyy HH:mm").toJSDate();
 };
 
+const now = () => DateTime.now().toJSDate();
+
 export default {
   format,
-  parse
+  parse,
+  now
 };
