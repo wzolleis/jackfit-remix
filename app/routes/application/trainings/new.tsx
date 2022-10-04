@@ -1,34 +1,35 @@
 import { Form, useActionData, useCatch, useTransition } from "@remix-run/react";
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import type { EquipmentActionData } from "~/models/equipment.server";
-import { createEquipment } from "~/models/equipment.server";
 import CatchView from "~/features/errorhandling/CatchView";
 import invariant from "tiny-invariant";
 import * as React from "react";
-import EquipmentView from "~/features/equipment/EquipmentView";
+import { createTraining, TrainingActionData } from "~/models/training.server";
+import TrainingView from "~/features/training/TrainingView";
+import messages from "~/features/i18n/messages";
+import dateUtils from "~/dateUtils";
+import { requireUserId } from "~/session.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-  const name = formData.get("name") || "";
-  const muscle = formData.get("muscle") || "";
-  const testEquipment = formData.get("test") || "false";
+  const executedAt = formData.get("executedAt") || dateUtils.format(new Date());
+  const userId = await requireUserId(request);
 
-  invariant(typeof name === "string", "Name must be a string");
-  invariant(typeof muscle === "string", "Type must be a string");
-  invariant(typeof testEquipment === "string", "Test must be a string");
+  invariant(typeof executedAt === "string", "ExecutedAt must be a string");
+  invariant(typeof userId === "string", "UserId must be a string");
+  invariant(!!userId, "UserId muss gesetzt sein");
 
-  const errors = await createEquipment({ name, muscle, test: testEquipment === "true" });
+  const errors = await createTraining({ userId, executedAt: dateUtils.parse(executedAt) || dateUtils.now() });
   const hasErrors = !!errors && Object.values(errors).some((errorMessage) => errorMessage);
   if (hasErrors) {
     return json(errors);
   }
 
-  return redirect("application/equipments");
+  return redirect("application/trainings");
 };
 
-export default function NewEquipment() {
-  const errors = useActionData<EquipmentActionData>();
+export default function NewTraining() {
+  const errors = useActionData<TrainingActionData>();
   const transition = useTransition();
 
   return (
@@ -37,13 +38,13 @@ export default function NewEquipment() {
         <fieldset
           disabled={transition.state === "submitting"}
         >
-          <EquipmentView errors={errors} />
+          <TrainingView errors={errors} />
           <div className="text-right">
             <button
               type="submit"
               className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300 focus:border-2 my-2 px-2"
             >
-              {transition.state === "submitting" ? "Speichere..." : "Gerät anlegen"}
+              {transition.state === "submitting" ? messages.training.new.submitting : messages.training.new.submit}
             </button>
           </div>
         </fieldset>
@@ -68,6 +69,7 @@ export const CatchBoundary = () => {
   const { status, statusText } = caught;
 
   return (
-    <CatchView statusText={statusText} status={status} caught={caught} description="Fehler beim Anlegen eines Geräts" />
+    <CatchView statusText={statusText} status={status} caught={caught}
+               description={"Training kann nicht angelegt werden"} />
   );
 };
