@@ -1,7 +1,7 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { Form, useActionData, useCatch, useLoaderData, useTransition } from "@remix-run/react";
+import { Form, Outlet, useActionData, useCatch, useLoaderData, useTransition } from "@remix-run/react";
 import CatchView from "~/features/errorhandling/CatchView";
 import * as React from "react";
 import { getTraining, TrainingActionData, updateTraining } from "~/models/training.server";
@@ -49,23 +49,26 @@ const TrainingDetails = () => {
   const errors = useActionData<TrainingActionData>();
   const transition = useTransition();
   return (
-    <div className="grid gap-6 mb-6 bg-gray-300 md:grid-cols-2 px-4">
-      <Form method="post" className="py-2">
-        <fieldset
-          disabled={transition.state === "submitting"}
-        >
-          <TrainingView errors={errors} defaultValues={training} />
-          <div className="text-right">
-            <button
-              type="submit"
-              className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300 focus:border-2 my-2 px-2"
-            >
-              {transition.state === "submitting" ? "Speichere..." : "Speichern"}
-            </button>
-          </div>
-        </fieldset>
-      </Form>
-    </div>
+    <>
+      <div className="grid gap-6 mb-6 bg-gray-300 md:grid-cols-2 px-4">
+        <Form method="post" className="py-2">
+          <fieldset
+            disabled={transition.state === "submitting"}
+          >
+            <TrainingView errors={errors} defaultValues={training} />
+            <div className="text-right">
+              <button
+                type="submit"
+                className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300 focus:border-2 my-2 px-2"
+              >
+                {transition.state === "submitting" ? "Speichere..." : "Speichern"}
+              </button>
+            </div>
+          </fieldset>
+        </Form>
+      </div>
+      <Outlet />
+    </>
   );
 };
 

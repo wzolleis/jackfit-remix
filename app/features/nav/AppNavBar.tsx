@@ -7,7 +7,7 @@ import messages from "~/features/i18n/messages";
 
 interface AppNavBarProps {
     appMenu: MenuEntry[];
-    user: User;
+    user: User | undefined;
 }
 
 const AppNavBar = ({ appMenu, user }: AppNavBarProps) => {
@@ -23,7 +23,7 @@ const AppNavBar = ({ appMenu, user }: AppNavBarProps) => {
                       <img src="/img/logo.jpg" className="h-8" alt="Jackfit" />
                   </a>
                   <span className="text-white px-2 uppercase">{messages.application.title}</span>
-                  <span className="text-white px-2 uppercase">{user.email}</span>
+                  <span className="text-white px-2 uppercase">{user?.email || "Login"}</span>
               </div>
               <div className="sm:hidden">
                   <button type="button"
