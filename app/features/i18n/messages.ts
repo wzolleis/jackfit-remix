@@ -8,6 +8,9 @@ const messages = {
   trainings: {
     new: "Neu"
   },
+  exercises: {
+    new: "Neu"
+  },
   equipment: {
     new: {
       submit: "Anlegen",

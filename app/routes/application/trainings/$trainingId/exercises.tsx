@@ -15,8 +15,6 @@ export const loader: LoaderFunction = async ({ params: { trainingId } }) => {
 const Exercises = () => {
   const data = useLoaderData<LoaderData>();
 
-  console.log("exercise data = ", data);
-
   return (
     <div>
       <span>Exercises !!!</span>
