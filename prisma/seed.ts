@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Exercise, PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -69,14 +69,14 @@ async function seed() {
   const exerciseSet = await prisma.exerciseSet.create({ data: {} });
 
 
-  const exerciseData = {
-    weight: 25.0,
+  const exerciseData: Omit<Exercise, "id"> = {
+    weight: 25,
+    repeatCount: 3,
     notes: "Das ist ein Test",
-    trainingType: "Weight",
-    repeatCount: 20,
+    duration: null,
     equipmentId: equipments[0].id,
     trainingId: training.id,
-    excerciseSetId: exerciseSet.id
+    exerciseSetId: exerciseSet.id
   };
 
   await prisma.exercise.create({ data: exerciseData });

@@ -35,7 +35,7 @@ const ExcerciseList = ({ exercises }: ExerciseListProps) => {
               <li key={exercise.id} className={"hover:bg-gray-400 hover:text-white " + bgStyle}>
                 <Link to={`exercises/${exercise.id}`}
                       className={isActive ? "font-bold" : "font-medium"}>
-                  {`Hier fehlt der Name für ${exercise.trainingType}`}
+                  {`Hier fehlt der Name für ${exercise.id}`}
                 </Link>
               </li>
             );
