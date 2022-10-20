@@ -16,7 +16,7 @@ const AppNavBar = ({ appMenu, user }: AppNavBarProps) => {
     const hamburgerOrCloseIcon = isOpen ? hamburgerIcon : closeIcon;
 
     return (
-      <header className="bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
+      <header className="bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3 mr-2 ml-2">
           <div className="flex items-center justify-between px-4 py-3 sm:p-0">
               <div className="flex items-center justify-between">
                   <a href="/">
